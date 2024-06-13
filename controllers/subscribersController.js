@@ -6,7 +6,7 @@
  * 구독자를 위한 컨트롤러 액션 정의
  */
 // 구독자 모델 요청
-const Subscriber = require("../models/Subscriber");
+const Subscriber = require("../models/subscriber");
 
 module.exports = {
   index: (req, res, next) => {
@@ -50,10 +50,14 @@ module.exports = {
   // 사용자를 데이터베이스에 저장하기 위한 create 액션 추가
   create: (req, res, next) => {
     let subscriberParams = {
-      name: req.body.name,
+      name: {
+        first: req.body.first,
+        last: req.body.last,
+      },
       email: req.body.email,
-      phone: req.body.phone,
-      newsletter: req.body.newsletter,
+      username: req.body.username,
+      password: req.body.password,
+      profileImg: req.body.profileImg,
     };
     // 폼 파라미터로 사용자 생성
     Subscriber.create(subscriberParams)
@@ -130,12 +134,16 @@ module.exports = {
   // update 액션 추가
   update: (req, res, next) => {
     let subscriberId = req.params.id,
-    subscriberParams = {
-      name: req.body.name,
-      email: req.body.email,
-      phone: req.body.phone,
-      newsletter: req.body.newsletter,
-    }; // 요청으로부터 사용자 파라미터 취득
+      subscriberParams = {
+        name: {
+          first: req.body.first,
+          last: req.body.last,
+        },
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password,
+        profileImg: req.body.profileImg,
+      }; // 요청으로부터 사용자 파라미터 취득
 
     User.findByIdAndUpdate(subscriberId, {
       $set: subscriberParams,

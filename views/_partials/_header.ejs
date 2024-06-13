@@ -3,19 +3,24 @@
 <!-- HEADER -->
 <header class="header">
   <div class="container">
-    <div class="container-left">
+    <div
+      class="d-flex flex-wrap py-3 align-items-center justify-content-center justify-content-md-between"
+    >
       <!-- 로고 -->
-      <figure class="logo">
-        <a href="/">
-          🚈
-          <h1 class="site-title">
-            <span class="ut-red">UT</span>-NodeJS 최종 프로젝트
-          </h1>
-        </a>
-      </figure>
+      <%- include('_logo.ejs') %>
 
       <!-- 메뉴 -->
       <%- include('_navigation.ejs') %>
+        <% if (loggedIn) { %>
+          <a class="btn btn-outline-secondary"
+          href="<%= `/users/${currentUser._id}`%>">Profile</a>
+          <span>Logged in as</span>
+        <% } else { %>
+          <a class="btn btn-outline-secondary"
+          href="/users/login">Login</a>
+          <a class="btn ut-red" href="/users/new">Register</a>
+        <% } %>
+      </div>
     </div>
   </div>
 </header>

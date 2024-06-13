@@ -1,0 +1,42 @@
+<!-- views/users/login.ejs -->
+
+<!--
+    Listing 23.1 (p. 334)
+    login.ejs에서의 로그인 폼 생성
+-->
+<div class="form-signin w-100 m-auto text-center">
+    <form action="/users/login" method="POST">
+      <%- include('../_partials/_logo.ejs') %>
+      <br />
+  
+      <h1 class="h3 mb-3 fw-normal">Please Login</h1>
+  
+      <div class="form-floating">
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          id="floatingInput"
+          placeholder="name@example.com"
+        />
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input
+          type="password"
+          name="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Password"
+        />
+        <label for="floatingPassword">Password</label>
+      </div>
+      <br />
+      <div class="checkbox mb-3">
+        <label> <input type="checkbox" value="remember-me" /> Remember me </label>
+      </div>
+      <button class="w-100 btn btn-lg ut-red" type="submit">Login</button>
+      <p class="mt-5 mb-3 text-body-secondary">© 2023 UT-Nodejs</p>
+    </form>
+  </div>
+  
