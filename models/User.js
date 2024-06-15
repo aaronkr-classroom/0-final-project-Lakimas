@@ -1,3 +1,4 @@
+// models/User.js
 "use strict";
 
 // [노트] 이 라인은 사용자 모델의 등록 전에 위치해야 한다.
@@ -16,10 +17,12 @@ const passportLocalMongoose = require("passport-local-mongoose"); // passport-lo
 const mongoose = require("mongoose"),
   { Schema } = mongoose,
   bcrypt = require("bcrypt"), // Lesson 23 - bcrypt 라이브러리를 요청
-  Subscriber = require("./subscriber"), // Lesson 23 - Subscriber 모델을 요청
+  Subscriber = require("./Subscriber"), // Lesson 23 - Subscriber 모델을 요청
+  randToken = require("rand-token"), // Lesson 28.2 - rand-token 라이브러리를 요청
   userSchema = Schema(
     // 사용자 스키마 생성
     {
+      apiToken: { type: String }, // @TODO: Lesson 28.1 API 토큰 속성 추가
       name: {
         // name 속성에 이름(first)과 성(last) 추가
         first: {
@@ -70,14 +73,11 @@ const mongoose = require("mongoose"),
   );
 
 /**
- * @TODO:
- * 
  * Listing 24.3 (p. 353)
  * passport-local-mongoose 플러그인을 사용자 스키마에 추가
  */
-// 이메일 주소를 사용자 이름으로 사용
 userSchema.plugin(passportLocalMongoose, {
-  usernameField: "email", // 'username' 대신 'email'을 사용자명 필드로 사용
+  usernameField: "email", // 이메일 주소를 사용자 이름으로 사용
 });
 
 /**
@@ -100,6 +100,11 @@ userSchema.virtual("fullName").get(function () {
  */
 userSchema.pre("save", function (next) {
   let user = this; // 콜백에서 함수 키워드 사용
+  /**
+   * Listing 28.2 (p. 408)
+   * @TODO: user.js에서 API 토큰 생성을 위한 pre("save") 훅 생성
+   */
+  if (!user.apiToken) user.apiToken = randToken.generate(16); // 사용자의 API 토큰 생성
 
   /**
    * Listing 19.4 (p. 281)
@@ -124,3 +129,7 @@ userSchema.pre("save", function (next) {
 });
 
 module.exports = mongoose.model("User", userSchema);
+
+/**
+ * 노트: 이 책을 쓰는 시점에는 Mongoose 훅에서 화살표 함수는 작동하지 않는다.
+ */

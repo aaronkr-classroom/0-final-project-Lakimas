@@ -6,7 +6,10 @@
  * userController.js에서 인덱스 액션 생성과 index 액션의 재방문
  */
 const passport = require("passport"),
-  User = require("../models/User"); // 사용자 모델 요청
+  httpStatus = require("http-status-codes"), // Lesson 27.3 HTTP 상태 코드 요청
+  User = require("../models/User"), // 사용자 모델 요청
+  jsonWebToken = require("jsonwebtoken"), // Lesson 28.3 JSON Web Token 패키지 요청
+  token = process.env.TOKEN || "nodeT0k3n"; // 토큰을 환경 변수로부터 가져오거나 기본값 설정
 
 /**
  * Listing 22.3 (p. 328)
@@ -30,6 +33,99 @@ const getUserParams = (body) => {
 
 module.exports = {
   /**
+   * Listing 28.1, 3 (p. 407, 410)
+   * usersController.js에서 API 토큰의 검증을 위한 미들웨어 함수의 추가
+   */
+  verifyToken: (req, res, next) => {
+    let token = req.query.apiToken; // 쿼리 매개변수로부터 API 토큰 수집
+    console.log("Verifying: ", token);
+    if (token) {
+      User.findOne({ apiToken: token }) // API 토큰을 사용해 사용자 찾기
+        .then((user) => {
+          if (user) {
+            next(); // 토큰이 일치하면 next 미들웨어 호출
+          } else {
+            next(new Error("Invalid API token!")); // 일치하지 않으면 에러 메시지로 응답
+          }
+        })
+        .catch((error) => {
+          next(new Error(error.message)); // 에러 메시지로 응답
+        });
+    } else {
+      next(new Error("No API token!")); // 일치하지 않으면 에러 메시지로 응답
+    }
+  },
+
+  /**
+   * Listing 28.4 (p. 413)
+   * @TODO: usersController.js에서 API를 위한 로그인 액션 생성
+   */
+  apiAuthenticate: (req, res, next) => {
+    passport.authenticate("local", (errors, user) => {
+      if (user) {
+        console.log("Houston, we have a user!", user);
+        let signedToken = jsonWebToken.sign(
+          {
+            data: user._id,
+            exp: new Date().setDate(new Date().getDate() + 1),
+          },
+          "secret_encoding_passphrase"
+        ); // 사용자 ID와 만료 시간을 사용해 토큰 서명
+        res.json({
+          success: true,
+          message: "Success authenticating user!",
+        }); // 토큰을 JSON으로 응답
+      } else {
+        console.log("Houston, we have a problem!");
+        res.json({
+          success: false,
+          message: "Could not authenticate user.",
+        }); // 인증 실패 시 메시지로 응답
+      }
+    })(req, res, next);
+  },
+
+  /**
+   * Listing 28.6 (p. 414-415)
+   * userController.js에서 API를 위한 유효성 체크 액션 생성
+   */
+  verifyJWT: (req, res, next) => {
+    let token = req.headers.token; // 헤더로부터 토큰 수집
+    console.log(req.headers);
+    if (token) {
+      jsonWebToken.verify(
+        token,
+        "secret_encoding_passphrase",
+        (errors, payload) => {
+          if (payload) {
+            User.findById(payload.data).then((user) => {
+              if (user) {
+                next(); // 사용자가 존재하면 next 미들웨어 호출
+              } else {
+                res.status(httpStatus.FORBIDDEN).json({
+                  error: true,
+                  message: "No user account found.",
+                }); // 사용자가 없으면 에러 메시지로 응답
+              }
+            });
+          } else {
+            res.status(httpStatus.UNAUTHORIZED).json({
+              error: true,
+              message: "Cannot verify API token.",
+            }); // 토큰이 일치하지 않으면 에러 메시지로 응답
+            next();
+          }
+        }
+      );
+    } else {
+      res.status(httpStatus.UNAUTHORIZED).json({
+        error: true,
+        message: "Provide Token.",
+      }); // 토큰이 없으면 에러 메시지로 응답
+    }
+  },
+
+  /**
    * Listing 23.3 (p. 336)
    * userController.js로의 로그인과 인증 액션 추가
    */
@@ -40,36 +136,35 @@ module.exports = {
     });
   },
 
+  setReferer: (req, res, next) => {
+    res.locals.redirect = req.headers.referer;
+    next();
+  },
+
   /**
-   * @TODO:
-   * 
    * Listing 24.5 (p. 356)
    * usersController.js에서 passport 인증 미들웨어 추가
    * 원래 있는 코드는 다 지우고 아래 코드로 대체
    */
-  authenticate: passport.authenticate("local", {
-    failureRedirect: "/users/login",
-    failureFlash: "Failed to login",
-    successRedirect: "/",
-    successFlash: "logged in!"
-  }),
-
   // local strategy로 사용자를 인증하기 위해 passport 호출
-  // authenticate: {...}  
-  // passport의 authenticate 메소드를 사용해 사용자 인증
+  authenticate: passport.authenticate("local", {
+    // 성공, 실패의 플래시 메시지를 설정하고 사용자의 인중 상태에 따라 리디렉션할 경로를 지정한다
+    failureRedirect: "/users/login",
+    failureFlash: "Failed to login.",
+    successRedirect: "/chat",
+    successFlash: "Logged in!",
+  }), // passport의 authenticate 메소드를 사용해 사용자 인증
 
   /**
-   * @TODO:
-   * 
    * Listing 24.8 (p. 359)
    * usersController.js에서 logout 액션 추가
    */
   logout: (req, res, next) => {
     req.logout(() => {
-      console.log("logout");
-    });
-    res.locals.redirect= "/";
-    req.flash("success","logged out");
+      console.log("Logged out!");
+    }); // passport의 logout 메소드를 사용해 사용자 로그아웃
+    req.flash("success", "You have been logged out!"); // 로그아웃 성공 메시지
+    res.locals.redirect = "/"; // 홈페이지로 리디렉션
     next();
   },
 
@@ -87,14 +182,22 @@ module.exports = {
       });
   },
   indexView: (req, res) => {
-    res.render("users/index", {
-      page: "users",
-      title: "All Users",
-      // flashMessages: {
-      //   // Listing 22.6 (p. 331) - 렌더링된 인덱스 뷰에서 플래시 메시지를 추가
-      //   success: "Loaded all users!",
-      // },
-    }); // 분리된 액션으로 뷰 렌더링
+    /*
+     * Listing 26.3 (p. 384)
+     * @TODO: userController.js에서 쿼리 매개변수가 존재할 때 JSON으로 응답하기
+     */
+    if (req.query.format === "json") {
+      res.json(res.locals.users);
+    } else {
+      res.render("users/index", {
+        page: "users",
+        title: "All Users",
+        // flashMessages: {
+        //   // Listing 22.6 (p. 331) - 렌더링된 인덱스 뷰에서 플래시 메시지를 추가
+        //   success: "Loaded all users!",
+        // },
+      }); // 분리된 액션으로 뷰 렌더링
+    }
   },
 
   /**
@@ -132,15 +235,25 @@ module.exports = {
      * usersController.js에서 create 액션에서의 새로운 사용자 등록
      * 원래 있는 코드는 다 지우고 아래 코드로 대체
      */
-    User.register(newUser, req.body.password, (err, user) => {
+    User.register(newUser, req.body.password, (error, user) => {
+      // 새로운 사용자 등록
       if (user) {
-        res.locals.redirect = "/users";
-        req.flash("success", "Account created!");
+        // 새로운 사용자가 등록되면
+        req.flash(
+          "success",
+          `${user.fullName}'s account created successfully!`
+        ); // 플래시 메시지를 추가하고
+        res.locals.redirect = "/users"; // 사용자 인덱스 페이지로 리디렉션
+        next();
       } else {
-        res.locals.redirect = "/users/new";
-        req.flash("error", `Failed to create account! ${err.message}`);
+        // 새로운 사용자가 등록되지 않으면
+        req.flash(
+          "error",
+          `Failed to create user account because: ${error.message}.`
+        ); // 에러 메시지를 추가하고
+        res.locals.redirect = "/users/new"; // 사용자 생성 페이지로 리디렉션
+        next();
       }
-      next();
     });
   },
 

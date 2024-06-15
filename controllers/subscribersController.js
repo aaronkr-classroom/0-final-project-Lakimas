@@ -6,7 +6,7 @@
  * 구독자를 위한 컨트롤러 액션 정의
  */
 // 구독자 모델 요청
-const Subscriber = require("../models/subscriber");
+const Subscriber = require("../models/Subscriber");
 
 module.exports = {
   index: (req, res, next) => {
@@ -23,10 +23,18 @@ module.exports = {
       });
   },
   indexView: (req, res) => {
-    res.render("subscribers/index", {
-      page: "subscribers",
-      title: "All Subscribers",
-    }); // 분리된 액션으로 뷰 렌더링
+    /*
+     * Listing 26.3 (p. 384)
+     * @TODO: userController.js에서 쿼리 매개변수가 존재할 때 JSON으로 응답하기
+     */
+    if (req.query.format === "json") {
+      res.json(res.locals.users);
+    } else {
+      res.render("subscribers/index", {
+        page: "subscribers",
+        title: "All Subscribers",
+      }); // 분리된 액션으로 뷰 렌더링
+    }
   },
 
   /**
@@ -50,14 +58,10 @@ module.exports = {
   // 사용자를 데이터베이스에 저장하기 위한 create 액션 추가
   create: (req, res, next) => {
     let subscriberParams = {
-      name: {
-        first: req.body.first,
-        last: req.body.last,
-      },
+      name: req.body.name,
       email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      profileImg: req.body.profileImg,
+      phoneNumber: req.body.phoneNumber,
+      newsletter: req.body.newsletter,
     };
     // 폼 파라미터로 사용자 생성
     Subscriber.create(subscriberParams)
@@ -135,14 +139,10 @@ module.exports = {
   update: (req, res, next) => {
     let subscriberId = req.params.id,
       subscriberParams = {
-        name: {
-          first: req.body.first,
-          last: req.body.last,
-        },
+        name: req.body.name,
         email: req.body.email,
-        username: req.body.username,
-        password: req.body.password,
-        profileImg: req.body.profileImg,
+        phoneNumber: req.body.phoneNumber,
+        newsletter: req.body.newsletter,
       }; // 요청으로부터 사용자 파라미터 취득
 
     User.findByIdAndUpdate(subscriberId, {

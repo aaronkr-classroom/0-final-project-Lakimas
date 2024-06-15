@@ -11,14 +11,24 @@
 
       <!-- 메뉴 -->
       <%- include('_navigation.ejs') %>
+
+      <!--
+      Listing 24.6 (p. 357)
+      내비게이션 바에 로그인 상태 추가
+    -->
+      <div class="user-info col-md-3 text-end">
         <% if (loggedIn) { %>
-          <a class="btn btn-outline-secondary"
-          href="<%= `/users/${currentUser._id}`%>">Profile</a>
-          <span>Logged in as</span>
+        <span>Logged in as</span>
+        <a
+          class="btn btn-outline-secondary"
+          href="<%= `/users/${currentUser._id}` %>"
+        >
+          <%= currentUser.username %>
+        </a>
+        <a class="btn ut-red" href="/users/logout">Logout</a>
         <% } else { %>
-          <a class="btn btn-outline-secondary"
-          href="/users/login">Login</a>
-          <a class="btn ut-red" href="/users/new">Register</a>
+        <a class="btn btn-outline-secondary" href="/users/login">Login</a>
+        <a class="btn ut-red" href="/users/new">Register</a>
         <% } %>
       </div>
     </div>
