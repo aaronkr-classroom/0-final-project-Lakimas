@@ -8,13 +8,13 @@
 <main class="">
   <div class="container col-xl-10 col-xxl-8 px-4 py-5">
     <div class="pt-5">
-      <h1>Add New Course</h1>
+      <h1>Add New Walkthrough</h1>
       <p>What will you teach today?</p>
 
       <div class="row">
         <div class="col-lg-6 mb-3 mt-3">
           <div class="data-form">
-            <form class="form-signin" action="/courses/create" method="POST">
+            <form class="form-signin" action="/walkthroughs/create" method="POST">
               <h2 class="form-signin-heading">Create a new walkthrough:</h2>
               <label for="inputTitle">Title</label>
               <input type="text" name="title" id="inputTitle" class="form-control" placeholder="Title" autofocus>
@@ -24,7 +24,7 @@
               <input type="text" name="maxStudents" id="inputMaxStudents" pattern="\d*" class="form-control" placeholder="Max Students" required>
               <label for="inputCost">Cost</label>
               <input type="text" name="cost" id="inputCost" pattern="\d*" class="form-control" placeholder="Cost" required>
-              <br /><button class="btn btn-lg ut-red" type="submit">Create Course</button>
+              <br /><button class="btn btn-lg ut-red" type="submit">Create Walkthrough</button>
             </form>
           </div>
         </div>

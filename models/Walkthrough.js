@@ -1,4 +1,4 @@
-// models/Course.js
+// models/Walkthrough.js
 "use strict";
 
 /**
@@ -6,7 +6,7 @@
  * 새로운 스키마와 모델의 생성
  */
 const mongoose = require("mongoose"),
-  courseSchema = mongoose.Schema(
+  walkthroughSchema = mongoose.Schema(
     {
       title: {
         // 강좌 스키마에 속성 추가
@@ -21,12 +21,12 @@ const mongoose = require("mongoose"),
       maxStudents: {
         type: Number,
         default: 0,
-        min: [0, "Course cannot have a negative number of students"],
+        min: [0, "Walkthrough cannot have a negative number of students"],
       },
       cost: {
         type: Number,
         default: 0,
-        min: [0, "Course cannot have a negative cost"],
+        min: [0, "Walkthrough cannot have a negative cost"],
       },
     },
     {
@@ -34,4 +34,4 @@ const mongoose = require("mongoose"),
     }
   );
 
-module.exports = mongoose.model("Course", courseSchema);
+module.exports = mongoose.model("Walkthrough", walkthroughSchema);

@@ -9,7 +9,7 @@ const router = require("express").Router(),
   apiRoutes = require("./apiRoutes"), // @TODO: 추가
   userRoutes = require("./userRoutes"),
   subscriberRoutes = require("./subscriberRoutes"),
-  courseRoutes = require("./courseRoutes"),
+  walkthroughRoutes = require("./walkthroughRoutes"),
   trainRoutes = require("./trainRoutes"),
   talkRoutes = require("./talkRoutes"),
   // researchRoutes = require("./researchRoutes"),
@@ -20,7 +20,7 @@ const router = require("express").Router(),
 router.use("/api", apiRoutes); // @TODO: 추가
 router.use("/users", userRoutes);
 router.use("/subscribers", subscriberRoutes);
-router.use("/courses", courseRoutes);
+router.use("/walkthroughs", walkthroughRoutes);
 router.use("/trains", trainRoutes);
 router.use("/talks", talkRoutes);
 // router.use("/research", researchRoutes);

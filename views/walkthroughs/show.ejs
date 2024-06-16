@@ -1,0 +1,43 @@
+<h1 class="center">Walkthrough Data for
+  <%= walkthrough.title %>
+</h1>
+
+<table class="table">
+  <tr>
+    <th>Title</th>
+    <td>
+      <%= walkthrough.title %>
+    </td>
+  </tr>
+  <tr>
+    <th>Description</th>
+    <td>
+      <%= walkthrough.description%>
+    </td>
+  </tr>
+  <tr>
+    <th>Max Students</th>
+    <td>
+      <%= walkthrough.maxStudents%>
+    </td>
+  </tr>
+  <tr>
+    <th>Cost</th>
+    <td>$
+      <%= walkthrough.cost%>
+    </td>
+  </tr>
+</table>
+
+
+<div>
+  <a class="button" href="<%=`/walkthroughs/${walkthrough._id}/edit`%>">
+    Edit Walkthrough Details
+  </a>
+</div>
+<div>
+  <a class="button" href="<%= `/walkthroughs/${walkthrough._id}/delete?_method=DELETE` %>" onclick="return confirm('Are you sure you want to delete this record?')" a>Delete</a>
+</div>
+<div>
+  <a class="button" href="/walkthroughs">View all walkthroughs</a>
+</div>

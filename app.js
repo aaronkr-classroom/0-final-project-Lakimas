@@ -19,7 +19,7 @@ const express = require("express"), // express를 요청
 const pagesController = require("./controllers/pagesController"),
   subscribersController = require("./controllers/subscribersController"),
   usersController = require("./controllers/usersController"),
-  coursesController = require("./controllers/coursesController"),
+  walkthroughsController = require("./controllers/walkthroughsController"),
   talksController = require("./controllers/talksController"),
   trainsController = require("./controllers/gamesController"),
   errorController = require("./controllers/errorController");
@@ -226,26 +226,26 @@ router.delete(
 );
 
 /**
- * Courses
+ * Walkthroughs
  */
-router.get("/courses", coursesController.index, coursesController.indexView); // index 라우트 생성
-router.get("/courses/new", coursesController.new); // 생성 폼을 보기 위한 요청 처리
+router.get("/walkthroughs", walkthroughsController.index, walkthroughsController.indexView); // index 라우트 생성
+router.get("/walkthroughs/new", walkthroughsController.new); // 생성 폼을 보기 위한 요청 처리
 router.post(
-  "/courses/create",
-  coursesController.create,
-  coursesController.redirectView
+  "/walkthroughs/create",
+  walkthroughsController.create,
+  walkthroughsController.redirectView
 ); // 생성 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
-router.get("/courses/:id", coursesController.show, coursesController.showView);
-router.get("/courses/:id/edit", coursesController.edit); // viewing을 처리하기 위한 라우트 추가
+router.get("/walkthroughs/:id", walkthroughsController.show, walkthroughsController.showView);
+router.get("/walkthroughs/:id/edit", walkthroughsController.edit); // viewing을 처리하기 위한 라우트 추가
 router.put(
-  "/courses/:id/update",
-  coursesController.update,
-  coursesController.redirectView
+  "/walkthroughs/:id/update",
+  walkthroughsController.update,
+  walkthroughsController.redirectView
 ); // 편집 폼에서 받아온 데이터의 처리와 결과를 사용자 보기 페이지에 보여주기
 router.delete(
-  "/courses/:id/delete",
-  coursesController.delete,
-  coursesController.redirectView
+  "/walkthroughs/:id/delete",
+  walkthroughsController.delete,
+  walkthroughsController.redirectView
 );
 
 /**
