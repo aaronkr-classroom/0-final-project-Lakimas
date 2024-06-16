@@ -57,7 +57,7 @@ const mongoose = require("mongoose"),
         type: String,
         trim: true,
       },
-      courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }], // 사용자와 강좌를 연결 시켜주기 위한 강좌 속성 추가
+      walkthroughs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Walkthrough" }], // 사용자와 강좌를 연결 시켜주기 위한 강좌 속성 추가
       subscribedAccount: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Subscriber", // subscribedAccount를 사용자와 구독자를 연결하기 위해 추가

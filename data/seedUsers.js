@@ -25,7 +25,7 @@ var users = [
     username: "grasshopper",
     phoneNumber: "",
     password: "1234",
-    courses: [],
+    walkthroughs: [],
     profileImg:
       "https://newsimg-hams.hankookilbo.com/2022/01/21/f96adb47-e8b1-43fe-aa16-f2043012cbec.jpg",
   },
@@ -38,7 +38,7 @@ var users = [
     username: "haroro",
     phoneNumber: "010-????-????",
     password: "1234",
-    courses: [],
+    walkthroughs: [],
     profileImg:
       "https://image.ytn.co.kr/general/jpg/2020/0719/202007191609185642_t.jpg",
   },
@@ -51,7 +51,7 @@ var users = [
     username: "mspark",
     phoneNumber: "010-1234-5678",
     password: "1234",
-    courses: [],
+    walkthroughs: [],
     profileImg: "",
   },
   {
@@ -63,7 +63,7 @@ var users = [
     username: "junha",
     phoneNumber: "010-7777-7777",
     password: "1234",
-    courses: [],
+    walkthroughs: [],
     profileImg: "",
   },
   {
@@ -75,7 +75,7 @@ var users = [
     username: "sehyung",
     phoneNumber: "",
     password: "1234",
-    courses: [],
+    walkthroughs: [],
     profileImg: "",
   },
   {
@@ -87,7 +87,7 @@ var users = [
     username: "seho",
     phoneNumber: "010-8282-8282",
     password: "1234",
-    courses: [],
+    walkthroughs: [],
     profileImg: "",
   },
 ];
@@ -113,7 +113,7 @@ setTimeout(() => {
         username: u.username,
         phoneNumber: u.phoneNumber,
         password: u.password,
-        courses: u.courses,
+        walkthroughs: u.walkthroughs,
         profileImg: u.profileImg,
       }).then((user) => {
         console.log(`Created user: ${user.name}`);

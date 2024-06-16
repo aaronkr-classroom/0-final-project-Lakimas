@@ -62,13 +62,13 @@ $(document).ready(() => {
 
   $("#modal-button").click(() => {
     $(".modal-body").html("");
-    $.get("/courses?format=json", (data) => {
-      data.forEach((course) => {
+    $.get("/walkthroughs?format=json", (data) => {
+      data.forEach((walkthrough) => {
         $(".modal-body").append(
           `<div>
-            <span class="course-title">${course.title}</span>
-            <div class="course-description">${course.description}</div>
-            <button class="btn btn-info course-button" data-id="${course._id}">View</button>
+            <span class="walkthrough-title">${walkthrough.title}</span>
+            <div class="walkthrough-description">${walkthrough.description}</div>
+            <button class="btn btn-info walkthrough-button" data-id="${walkthrough._id}">View</button>
           </div>`
         );
       });
@@ -87,26 +87,26 @@ $(document).ready(() => {
 
   $("#modal-button").click(() => {
     $(".modal-body").html("");
-    $.get(`/api/courses?apiToken=${apiToken}`, (results = {}) => {
+    $.get(`/api/walkthroughs?apiToken=${apiToken}`, (results = {}) => {
       // 데이터 표현을 위한 로컬 변수 설정
       let data = results.data;
 
       // 데이터 객체가 강좌 정보를 포함하는지 체크
-      if (!data || !data.courses) return;
+      if (!data || !data.walkthroughs) return;
 
-      console.log(data.courses);
+      console.log(data.walkthroughs);
 
       // 데이터들을 푸프를 돌며 모달에 추가
-      data.courses.forEach((course) => {
-        console.log(course);
+      data.walkthroughs.forEach((walkthrough) => {
+        console.log(walkthrough);
         $(".modal-body").append(
           `<div>
-            <h4 class="course-title">${course.title}</h4>
-            <p class="course-description">${course.description}</p>
-            <button class="btn btn-info course-button 
-              ${course.joined ? "joined-button" : "join-button"}" 
-							data-id="${course._id}">
-							${course.joined ? "Joined" : "Join"}
+            <h4 class="walkthrough-title">${walkthrough.title}</h4>
+            <p class="walkthrough-description">${walkthrough.description}</p>
+            <button class="btn btn-info walkthrough-button 
+              ${walkthrough.joined ? "joined-button" : "join-button"}" 
+							data-id="${walkthrough._id}">
+							${walkthrough.joined ? "Joined" : "Join"}
             </button>
           </div>`
         );
@@ -136,15 +136,15 @@ let addJoinButtonListener = () => {
 
   $(".join-button").click((event) => {
     let $button = $(event.target),
-      courseId = $button.data("id"); // 버튼과 버튼 ID 데이터 집아 놓기
+      walkthroughId = $button.data("id"); // 버튼과 버튼 ID 데이터 집아 놓기
 
     // 참가를 위해 강좌 ID로 Ajax 요청 만들기
     $.get(
-      `/api/courses/${courseId}/join?apiToken=${apiToken}`,
+      `/api/walkthroughs/${walkthroughId}/join?apiToken=${apiToken}`,
       (results = {}) => {
         let data = results.data;
 
-        console.log("Joining course", courseId);
+        console.log("Joining walkthrough", walkthroughId);
         console.log(results);
 
         // 참가가 성공했는지 체크하고 버튼 변경

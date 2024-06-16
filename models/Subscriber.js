@@ -30,7 +30,7 @@ const mongoose = require("mongoose"),
       profileImg: {
         type: String,
       },
-      courses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
+      walkthroughs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Walkthrough" }],
     },
     {
       timestamps: true,
