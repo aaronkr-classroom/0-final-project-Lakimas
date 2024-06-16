@@ -5,9 +5,10 @@ const mongoose = require("mongoose"),
   Train = require("../models/Train");
 
 // 데이터베이스 연결 설정
-mongoose.connect("mongodb://127.0.0.1:27017/aaronkr", {
-  useNewUrlParser: true,
-});
+mongoose.connect(
+  "mongodb+srv://ut-node:1234@ut-node.0oy3l1r.mongodb.net/?retryWrites=true&w=majority&appName=UT-Node", {
+    useNewUrlParser: true,
+  });
 
 mongoose.connection;
 
