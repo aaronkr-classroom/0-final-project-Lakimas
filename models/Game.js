@@ -1,9 +1,9 @@
-// models/Train.js
+// models/Game.js
 "use strict";
 
 const mongoose = require("mongoose"),
   { Schema } = require("mongoose"),
-  trainSchema = new Schema({
+  gameSchema = new Schema({
     title: {
       type: String,
       required: true,
@@ -16,7 +16,7 @@ const mongoose = require("mongoose"),
     button: {
       type: String,
     },
-    trainImg: {
+    gameImg: {
       type: String,
     },
     modalText: {
@@ -24,4 +24,4 @@ const mongoose = require("mongoose"),
     },
   });
 
-module.exports = mongoose.model("Train", trainSchema);
+module.exports = mongoose.model("Game", gameSchema);

@@ -10,7 +10,7 @@ const router = require("express").Router(),
   userRoutes = require("./userRoutes"),
   subscriberRoutes = require("./subscriberRoutes"),
   walkthroughRoutes = require("./walkthroughRoutes"),
-  trainRoutes = require("./trainRoutes"),
+  gameRoutes = require("./gameRoutes"),
   talkRoutes = require("./talkRoutes"),
   // researchRoutes = require("./researchRoutes"),
   errorRoutes = require("./errorRoutes"),
@@ -21,7 +21,7 @@ router.use("/api", apiRoutes); // @TODO: 추가
 router.use("/users", userRoutes);
 router.use("/subscribers", subscriberRoutes);
 router.use("/walkthroughs", walkthroughRoutes);
-router.use("/trains", trainRoutes);
+router.use("/games", gameRoutes);
 router.use("/talks", talkRoutes);
 // router.use("/research", researchRoutes);
 router.use("/", homeRoutes);
