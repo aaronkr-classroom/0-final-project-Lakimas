@@ -18,16 +18,6 @@ const mongoose = require("mongoose"),
         type: String,
         required: true,
       },
-      maxStudents: {
-        type: Number,
-        default: 0,
-        min: [0, "Walkthrough cannot have a negative number of students"],
-      },
-      cost: {
-        type: Number,
-        default: 0,
-        min: [0, "Walkthrough cannot have a negative cost"],
-      },
     },
     {
       timestamps: true,

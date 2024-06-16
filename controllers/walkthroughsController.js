@@ -144,8 +144,6 @@ module.exports = {
     let walkthroughParams = {
       title: req.body.title,
       description: req.body.description,
-      maxStudents: req.body.maxStudents,
-      cost: req.body.cost,
     };
     // 폼 파라미터로 사용자 생성
     Walkthrough.create(walkthroughParams)
@@ -225,8 +223,6 @@ module.exports = {
       walkthroughParams = {
         title: req.body.title,
         description: req.body.description,
-        maxStudents: req.body.maxStudents,
-        cost: req.body.cost,
       }; // 요청으로부터 사용자 파라미터 취득
 
     Walkthrough.findByIdAndUpdate(walkthroughId, {
