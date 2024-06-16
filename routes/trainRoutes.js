@@ -6,7 +6,7 @@
  * @TODO: Train 라우트의 trainRoutes.js로의 이동
  */
 const router = require("express").Router(),
-  trainsController = require("../controllers/trainsController");
+  trainsController = require("../controllers/gamesController");
 
 /**
  * Trains
